@@ -1,9 +1,13 @@
 <Solution>
+  <Folder Name="/application/">
+    <Project Path="PdfProcessing.Application/PdfProcessing.Application.csproj" Id="5b35953e-d1b3-410b-95c7-ea8fcf29adcc" />
+  </Folder>
   <Folder Name="/background-services/">
     <Project Path="PdfProcessing.BS.PdfReaderRabbitMq/PdfProcessing.BS.PdfReaderRabbitMq.csproj" Id="61f2113d-f98b-4dd8-a5eb-3c97b4dd6615" />
   </Folder>
   <Folder Name="/infrastructure/">
-    <Project Path="PdfProcessing.Persistence/PdfProcessing.Persistence.csproj" Id="05394ffd-7e97-434f-9678-96ee6fa0f8b8" />
+    <Project Path="PdfProcessing.Infrastructure.Integration/PdfProcessing.Infrastructure.Integration.Contracts.csproj" Id="a33b393f-029a-4932-aba6-d28e628589c2" />
+    <Project Path="PdfProcessing.Persistence/PdfProcessing.Infrastructure.Persistence.csproj" Id="05394ffd-7e97-434f-9678-96ee6fa0f8b8" />
   </Folder>
   <Project Path="PdfProcessing.API/PdfProcessing.API.csproj" />
 </Solution>
