@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/background-services/">
+    <Project Path="PdfProcessing.BS.PdfReaderRabbitMq/PdfProcessing.BS.PdfReaderRabbitMq.csproj" Id="61f2113d-f98b-4dd8-a5eb-3c97b4dd6615" />
+  </Folder>
+  <Folder Name="/infrastructure/">
+    <Project Path="PdfProcessing.Persistence/PdfProcessing.Persistence.csproj" Id="05394ffd-7e97-434f-9678-96ee6fa0f8b8" />
+  </Folder>
+  <Project Path="PdfProcessing.API/PdfProcessing.API.csproj" />
+</Solution>
