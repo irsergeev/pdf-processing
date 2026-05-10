@@ -22,12 +22,12 @@ public class CreatePdfEventHandler (
         try
         {
             var newPdfId = await _pdfService.CreateAsync();
-            await _pdfService.SetUploadingStatus(newPdfId, UploadingStatusEnum.GettingText);
+            await _pdfService.SetUploadingStatus(newPdfId, UploadingStatusEnum.GETTING_TEXT);
 
             var pdfContentAsString = await _pdfParser.GetContentString(eventData.DocumentContent);
 
             await _pdfService.UpdateStringContent(newPdfId, pdfContentAsString);
-            await _pdfService.SetUploadingStatus(newPdfId, UploadingStatusEnum.Uploaded);
+            await _pdfService.SetUploadingStatus(newPdfId, UploadingStatusEnum.UPLOADED);
         }
         catch(Exception ex)
         {
