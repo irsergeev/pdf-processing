@@ -21,9 +21,9 @@ public class PdfParser : IPdfParser
         {
             using var pdfDocument = PdfDocument.Open(pdfAsBytesArray);
 
-            foreach (Page page in pdfDocument.GetPages())
+            foreach (var page in pdfDocument.GetPages())
             {
-                string text = ContentOrderTextExtractor.GetText(page);
+                var text = ContentOrderTextExtractor.GetText(page);
                 IEnumerable<Word> words = page.GetWords(NearestNeighbourWordExtractor.Instance);
 
                 var stringResult = string.Join(" ", words.Select(c => c.Text));
