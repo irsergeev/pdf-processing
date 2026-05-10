@@ -1,43 +1,54 @@
-﻿using PdfProcessing.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PdfProcessing.Application.Interfaces;
 using PdfProcessing.Infrastructure.Persistence.Entities;
 using PdfProcessing.Infrastructure.Persistence.Enums;
+using PdfProcessing.Infrastructure.Persistence.Interfaces;
 
 namespace PdfProcessing.Application.Services;
 
-public class PdfService : IPdfService
+public class PdfService (IRepository<PdfDocument> repository) : IPdfService
 {
-    public async Task<Guid> CreateAsync()
+    private readonly IRepository<PdfDocument> _repository = repository;
+
+    public Task CreateAsync(PdfDocument document)
     {
-        throw new NotImplementedException();
+        _repository.Create(document);
+        return Task.CompletedTask;
     }
 
     public async Task<PdfDocument> GetAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var document = await _repository
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        return document!;
     }
 
-    public async Task<IEnumerable<Guid>> GetListAsync()
+    public async Task<IReadOnlyList<PdfDocument>> GetListAsync()
     {
-        throw new NotImplementedException();
+        var documentList = new List<PdfDocument>();
+
+        var documents = await _repository
+            .AsNoTracking()
+            .ToListAsync();
+
+        documentList.AddRange(documents);
+        return documentList;
     }
 
     public async Task<string> GetStringContentAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var document = await _repository.FirstOrDefaultAsync(c => c.Id == id);
+
+        return document?.DocumentContent ?? string.Empty;
     }
 
-    public Task SetUploadingStatus(Guid id, UploadingStatusEnum status)
+    public async Task SetUploadingStatus(Guid id, UploadingStatusEnum status)
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task UpdateStringContent(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateStringContent(Guid id, string updatedContent)
-    {
-        throw new NotImplementedException();
+        await _repository
+            .Where(c => c.Id == id)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(p => p.ProcessingStatus, status));
     }
 }

@@ -1,16 +1,23 @@
-﻿using PdfProcessing.Application.Interfaces;
+﻿using AutoMapper;
+using PdfProcessing.Application.Interfaces;
 using PdfProcessing.Infrastructure.Integration.Contracts.Events;
+using PdfProcessing.Infrastructure.Persistence.Entities;
 using PdfProcessing.Infrastructure.Persistence.Enums;
+using PdfProcessing.Infrastructure.Persistence.Interfaces;
 
 namespace PdfProcessing.Application.Services.RabbitMQ.Handlers;
 
 public class CreatePdfEventHandler (
     IPdfService pdfService,
-    IPdfParser pdfParser
+    IPdfParser pdfParser,
+    IMapper mapper,
+    IUnitOfWork unitOfWork
     ) : ICreatePdfEventHandler
 {
     private readonly IPdfService _pdfService = pdfService;
     private readonly IPdfParser _pdfParser = pdfParser;
+    private readonly IMapper _mapper = mapper;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task HandleAsync(CreatePdfEvent eventData, CancellationToken cancellationToken)
     {
@@ -21,13 +28,19 @@ public class CreatePdfEventHandler (
 
         try
         {
-            var newPdfId = await _pdfService.CreateAsync();
-            await _pdfService.SetUploadingStatus(newPdfId, UploadingStatusEnum.GETTING_TEXT);
+            var document = _mapper.Map<PdfDocument>(eventData);
+
+            await _pdfService.CreateAsync(document);
+            await _unitOfWork.SaveChangesAsync();
+
+            await _pdfService.SetUploadingStatus(document.Id, UploadingStatusEnum.GETTING_TEXT);
 
             var pdfContentAsString = await _pdfParser.GetContentString(eventData.DocumentContent);
 
-            await _pdfService.UpdateStringContent(newPdfId, pdfContentAsString);
-            await _pdfService.SetUploadingStatus(newPdfId, UploadingStatusEnum.UPLOADED);
+            document.DocumentContent = pdfContentAsString;
+            await _pdfService.SetUploadingStatus(document.Id, UploadingStatusEnum.UPLOADED);
+
+            await _unitOfWork.SaveChangesAsync();
         }
         catch(Exception ex)
         {

@@ -5,10 +5,9 @@ namespace PdfProcessing.Application.Interfaces;
 
 public interface IPdfService
 {
-    Task<Guid> CreateAsync();
-    Task UpdateStringContent(Guid id, string updatedContent);
+    Task CreateAsync(PdfDocument document);
     Task<PdfDocument> GetAsync(Guid id);
-    Task<IEnumerable<Guid>> GetListAsync();
+    Task<IReadOnlyList<PdfDocument>> GetListAsync();
     Task<string> GetStringContentAsync(Guid id);
     Task SetUploadingStatus(Guid id, UploadingStatusEnum status);
 }
