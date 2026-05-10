@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="MassTransit.Interop.NServiceBus" Version="9.1.0" />
+    <PackageReference Include="PdfPig" Version="0.1.14" />
   </ItemGroup>
 
   <ItemGroup>
