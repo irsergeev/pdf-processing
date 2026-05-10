@@ -5,11 +5,10 @@ using System.Linq.Expressions;
 
 namespace PdfProcessing.Infrastructure.Persistence.Repositories;
 
-public class Repository<T> : IRepository<T>
+public class Repository<T> (DbContext context) : IRepository<T>
     where T : class
 {
-    private readonly DbContext _context;
-    public Repository(DbContext context) => _context = context;
+    private readonly DbContext _context = context;
 
     public void Create(T entity) => _context.Set<T>().Add(entity);
     public void Create(IEnumerable<T> entities) => _context.Set<T>().AddRange(entities);
