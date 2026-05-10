@@ -2,7 +2,6 @@
 
 public enum UploadingStatusEnum
 {
-    New = 0,
-    GettingText,
+    GettingText = 0,
     Uploaded
 }
