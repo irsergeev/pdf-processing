@@ -10,4 +10,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PdfProcessing.Application\PdfProcessing.Application.csproj" />
+    <ProjectReference Include="..\PdfProcessing.Persistence\PdfProcessing.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
 </Project>

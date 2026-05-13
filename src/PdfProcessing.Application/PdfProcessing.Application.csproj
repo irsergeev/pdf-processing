@@ -13,7 +13,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="MassTransit.Interop.NServiceBus" Version="9.1.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.7" />
     <PackageReference Include="PdfPig" Version="0.1.14" />
   </ItemGroup>
 
