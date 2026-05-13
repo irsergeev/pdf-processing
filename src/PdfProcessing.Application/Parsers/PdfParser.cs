@@ -32,9 +32,8 @@ public class PdfParser : IPdfParser
 
             return emptyStringResult;
         }
-        catch (Exception ex)
+        catch
         {
-            // to so something
             return emptyStringResult;
         }
     }

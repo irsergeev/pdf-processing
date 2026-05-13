@@ -14,9 +14,8 @@ public class CreatePdfEventConsumer (ICreatePdfEventHandler handler) : IConsumer
         {
             await _handler.HandleAsync(context.Message, context.CancellationToken);
         }
-        catch (Exception ex)
+        catch
         {
-            // to do something
         }
     }
 }

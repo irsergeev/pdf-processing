@@ -44,7 +44,7 @@ public class PdfService (IRepository<PdfDocument> repository) : IPdfService
         return document?.DocumentContent ?? string.Empty;
     }
 
-    public async Task SetUploadingStatus(Guid id, UploadingStatusEnum status)
+    public async Task SetUploadingStatusAsync(Guid id, UploadingStatusEnum status)
     {
         await _repository
             .Where(c => c.Id == id)

@@ -33,18 +33,17 @@ public class CreatePdfEventHandler (
             await _pdfService.CreateAsync(document);
             await _unitOfWork.SaveChangesAsync();
 
-            await _pdfService.SetUploadingStatus(document.Id, UploadingStatusEnum.GETTING_TEXT);
+            await _pdfService.SetUploadingStatusAsync(document.Id, UploadingStatusEnum.GETTING_TEXT);
 
             var pdfContentAsString = await _pdfParser.GetContentString(eventData.DocumentContent);
 
             document.DocumentContent = pdfContentAsString;
-            await _pdfService.SetUploadingStatus(document.Id, UploadingStatusEnum.UPLOADED);
+            await _pdfService.SetUploadingStatusAsync(document.Id, UploadingStatusEnum.UPLOADED);
 
             await _unitOfWork.SaveChangesAsync();
         }
-        catch(Exception ex)
+        catch
         {
-            // to do something
         }
     }
 }

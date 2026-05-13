@@ -7,8 +7,5 @@ public class UnitOfWork(DbContext dbContext) : IUnitOfWork
 {
     private readonly DbContext _dbContext = dbContext;
 
-    public async Task SaveChangesAsync()
-    {
-        await _dbContext.SaveChangesAsync();
-    }
+    public async Task SaveChangesAsync() => await _dbContext.SaveChangesAsync();
 }

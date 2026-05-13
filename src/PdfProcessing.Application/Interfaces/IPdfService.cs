@@ -9,5 +9,5 @@ public interface IPdfService
     Task<PdfDocument> GetAsync(Guid id);
     Task<IReadOnlyList<PdfDocument>> GetListAsync();
     Task<string> GetStringContentAsync(Guid id);
-    Task SetUploadingStatus(Guid id, UploadingStatusEnum status);
+    Task SetUploadingStatusAsync(Guid id, UploadingStatusEnum status);
 }
