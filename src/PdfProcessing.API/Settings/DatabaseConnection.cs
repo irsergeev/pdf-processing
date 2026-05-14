@@ -1,7 +1,6 @@
-﻿namespace PdfProcessing.API.Settings
+﻿namespace PdfProcessing.API.Settings;
+
+public class DatabaseConnection
 {
-    public class DatabaseConnection
-    {
-        public required string PosgreSQL { get; init; }
-    }
+    public required string PosgreSQL { get; init; }
 }

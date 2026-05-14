@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PdfProcessing.Application.Interfaces;
+using PdfProcessing.Application.Parsers;
 using PdfProcessing.Application.Services;
 using PdfProcessing.Application.Services.RabbitMQ.Consumers;
 using PdfProcessing.Application.Settings;
@@ -11,7 +12,7 @@ namespace PdfProcessing.Application;
 public static class DependencyInjectionExtensions
 {
     public static T GetSectionOrThrow<T>(this IConfiguration configuration)
-        => configuration.GetRequiredSection(nameof(T)).Get<T>()
+        => configuration.GetRequiredSection(typeof(T).Name).Get<T>()
             ?? throw new InvalidOperationException("Configuration item does not exists");
 
     public static IServiceCollection UseRabbitMqMasstransitConsumer(
@@ -45,7 +46,7 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services
-            .AddScoped<IPdfParser, IPdfParser>()
+            .AddScoped<IPdfParser, PdfParser>()
             .AddScoped<IPdfService, PdfService>()
             .AddAutoMapper(mapConfig =>
             {
