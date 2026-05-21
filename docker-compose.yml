@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pdfuser
+      POSTGRES_PASSWORD: pdfpass
+      POSTGRES_DB: pdfprocessing
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pdfuser -d pdfprocessing"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: pdf
+      RABBITMQ_DEFAULT_PASS: pdf
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_port_connectivity -p 5672"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 40s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./src
+      dockerfile: PdfProcessing.API/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__PdfProcessing: Information
+      Logging__Console__FormatterName: simple
+      DatabaseConnection__PosgreSQL: Host=postgres;Port=5432;Database=pdfprocessing;Username=pdfuser;Password=pdfpass
+      RabbitConsumerSetting__HostName: rabbitmq
+      RabbitConsumerSetting__Port: "5672"
+      RabbitConsumerSetting__Username: pdf
+      RabbitConsumerSetting__Password: pdf
+      RabbitConsumerSetting__QueueName: create-pdf-queue
+    ports:
+      - "8080:8080"
+
+  worker:
+    build:
+      context: ./src
+      dockerfile: PdfProcessing.BS.PdfReaderRabbitMq/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__PdfProcessing: Information
+      Logging__Console__FormatterName: simple
+      DatabaseConnection__PosgreSQL: Host=postgres;Port=5432;Database=pdfprocessing;Username=pdfuser;Password=pdfpass
+      RabbitConsumerSetting__HostName: rabbitmq
+      RabbitConsumerSetting__Port: "5672"
+      RabbitConsumerSetting__Username: pdf
+      RabbitConsumerSetting__Password: pdf
+      RabbitConsumerSetting__QueueName: create-pdf-queue
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

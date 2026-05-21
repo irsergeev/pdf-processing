@@ -1,4 +1,4 @@
-﻿using PdfProcessing.Infrastructure.Persistence.Entities;
+using PdfProcessing.Infrastructure.Persistence.Entities;
 using PdfProcessing.Infrastructure.Persistence.Enums;
 
 namespace PdfProcessing.Application.Interfaces;

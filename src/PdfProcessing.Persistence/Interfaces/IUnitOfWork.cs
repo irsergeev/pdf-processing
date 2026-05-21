@@ -1,4 +1,4 @@
-﻿namespace PdfProcessing.Infrastructure.Persistence.Interfaces;
+namespace PdfProcessing.Infrastructure.Persistence.Interfaces;
 
 public interface IUnitOfWork
 {

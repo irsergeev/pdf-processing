@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PdfProcessing.Application.Interfaces;
 using PdfProcessing.Infrastructure.Persistence.Entities;
 using PdfProcessing.Infrastructure.Persistence.Enums;

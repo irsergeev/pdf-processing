@@ -1,6 +1,5 @@
-﻿using MassTransit;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using PdfProcessing.Application.Interfaces;
 using PdfProcessing.Infrastructure.Integration.Contracts.Events;
 
@@ -28,8 +27,7 @@ public class QueueUploadFileService(IPublishEndpoint publishEndpoint) : IQueueUp
                 DocumentContent = memoryStream.ToArray()
             };
 
-            var messageJson = JsonConvert.SerializeObject(messageModel);
-            await _publishEndpoint.Publish(messageJson);
+            await _publishEndpoint.Publish(messageModel);
 
             return true;
         }

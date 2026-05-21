@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PdfProcessing.Infrastructure.Persistence.Interfaces;
 
 namespace PdfProcessing.Infrastructure.Persistence;

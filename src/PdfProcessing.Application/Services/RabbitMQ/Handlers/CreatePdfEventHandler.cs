@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using PdfProcessing.Application.Interfaces;
 using PdfProcessing.Infrastructure.Integration.Contracts.Events;
 using PdfProcessing.Infrastructure.Persistence.Entities;
