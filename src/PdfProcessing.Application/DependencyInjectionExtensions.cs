@@ -27,12 +27,7 @@ public static class DependencyInjectionExtensions
             x.UsingRabbitMq((context, cfg) =>
             {
                 var rabbitSettings = configuration.GetSectionOrThrow<RabbitConsumerSetting>();
-
-                cfg.Host(rabbitSettings.HostName, rabbitSettings.Port, "/", h =>
-                {
-                    h.Username(rabbitSettings.Username);
-                    h.Password(rabbitSettings.Password);
-                });
+                ConfigureRabbitHost(cfg, rabbitSettings);
 
                 if (string.IsNullOrWhiteSpace(rabbitSettings.QueueName))
                 {
@@ -58,16 +53,22 @@ public static class DependencyInjectionExtensions
             x.UsingRabbitMq((_, cfg) =>
             {
                 var rabbitSettings = configuration.GetSectionOrThrow<RabbitConsumerSetting>();
-
-                cfg.Host(rabbitSettings.HostName, rabbitSettings.Port, "/", h =>
-                {
-                    h.Username(rabbitSettings.Username);
-                    h.Password(rabbitSettings.Password);
-                });
+                ConfigureRabbitHost(cfg, rabbitSettings);
             });
         });
 
         return services;
+    }
+
+    private static void ConfigureRabbitHost(IRabbitMqBusFactoryConfigurator cfg, RabbitConsumerSetting settings)
+    {
+        var port = ushort.TryParse(settings.Port, out var parsedPort) ? parsedPort : (ushort)5672;
+
+        cfg.Host(settings.HostName, port, "/", h =>
+        {
+            h.Username(settings.Username);
+            h.Password(settings.Password);
+        });
     }
 
     public static IServiceCollection AddApplication(this IServiceCollection services)
